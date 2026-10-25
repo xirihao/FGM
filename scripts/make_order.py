@@ -6,7 +6,7 @@ The resulting permutation contains indices only. replay.py never reads labels.
 import argparse
 from pathlib import Path
 import numpy as np
-from fggm.io import write_json, sha256
+from fgm.io import write_json, sha256
 
 
 def main():

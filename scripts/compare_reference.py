@@ -1,7 +1,8 @@
-"""Optional regression against an external archived FGGM implementation.
+"""Optional regression against an external archived implementation.
 
 Only source code and cached features are read. No benchmark label is used.
-The reference directory must contain fggm.py and prototype_core.py.
+The reference directory must contain fgm.py and prototype_core.py.
+Archived fggm.py files and their FGGM class name are also supported.
 """
 import argparse
 import importlib.util
@@ -9,8 +10,27 @@ from pathlib import Path
 import sys
 import numpy as np
 import torch
-from fggm import FGGM, FGGMConfig
-from fggm.io import write_json, sha256
+from fgm import FGM, FGMConfig
+from fgm.io import write_json, sha256
+
+
+def load_reference(directory):
+    """Prefer the current filename and class, with archived-name compatibility."""
+    directory = directory.resolve()
+    path = next((directory / name for name in ("fgm.py", "fggm.py")
+                 if (directory / name).is_file()), None)
+    if path is None:
+        raise FileNotFoundError(f"Expected fgm.py (or archived fggm.py) in {directory}")
+    sys.path.insert(0, str(directory))
+    spec = importlib.util.spec_from_file_location("archived_fgm_reference", path)
+    reference = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(reference)
+    model = getattr(reference, "FGM", None)
+    if model is None:
+        model = getattr(reference, "FGGM", None)
+    if model is None:
+        raise AttributeError(f"Expected FGM (or archived FGGM) class in {path}")
+    return model, path
 
 
 def main():
@@ -23,10 +43,7 @@ def main():
     args = p.parse_args()
     if args.output.exists():
         raise FileExistsError(args.output)
-    sys.path.insert(0, str(args.reference_code.resolve()))
-    spec = importlib.util.spec_from_file_location("archived_fggm_reference", args.reference_code / "fggm.py")
-    reference = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(reference)
+    reference_model, reference_path = load_reference(args.reference_code)
     torch.set_num_threads(4)
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cudnn.allow_tf32 = False
@@ -38,9 +55,9 @@ def main():
     if n < 1:
         raise ValueError("samples must be positive")
     T = torch.from_numpy(text).cuda()
-    old = reference.FGGM(T, h=args.h)
-    legacy = FGGM(T, FGGMConfig(h=args.h, normalization="legacy"))
-    guarded = FGGM(T, FGGMConfig(h=args.h, normalization="guarded"))
+    old = reference_model(T, h=args.h)
+    legacy = FGM(T, FGMConfig(h=args.h, normalization="legacy"))
+    guarded = FGM(T, FGMConfig(h=args.h, normalization="guarded"))
     matches = {"legacy_scores_bitwise_equal": True, "guarded_scores_bitwise_equal": True,
                "legacy_anchors_bitwise_equal": True, "guarded_anchors_bitwise_equal": True,
                "legacy_frequency_bitwise_equal": True, "guarded_frequency_bitwise_equal": True}
@@ -66,8 +83,8 @@ def main():
     result = {"passed": all(matches.values()), "observations": n, "full_stream": n == len(x),
               "dimension": text.shape[1], "classes": len(text), "h": args.h,
               "checks": matches, "first_difference": first_difference,
-              "reference_sha256": {name: sha256(args.reference_code / name) for name in ("fggm.py", "prototype_core.py")},
-              "source_sha256": sha256(Path(__file__).resolve().parents[1] / "fggm/model.py")}
+              "reference_sha256": {name: sha256(args.reference_code / name) for name in (reference_path.name, "prototype_core.py")},
+              "source_sha256": sha256(Path(__file__).resolve().parents[1] / "fgm/model.py")}
     write_json(args.output, result)
     print(result)
     if not result["passed"]:

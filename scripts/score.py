@@ -3,7 +3,7 @@ import argparse
 import json
 from pathlib import Path
 import numpy as np
-from fggm.io import sha256, write_json
+from fgm.io import sha256, write_json
 
 
 def main():

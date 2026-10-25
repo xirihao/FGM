@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import numpy as np
-from fggm.io import write_json
+from fgm.io import write_json
 
 TEN = ["oxford_flowers", "dtd", "oxford_pets", "stanford_cars", "ucf101", "caltech101", "food101", "sun397", "fgvc", "eurosat"]
 FIVE = ["imagenet", "imagenet-a", "imagenet-v", "imagenet-r", "imagenet-s"]

@@ -6,12 +6,12 @@ previous value. Set normalization='legacy' for the unguarded archived division.
 """
 import numpy as np
 import torch
-from .config import FGGMConfig
+from .config import FGMConfig
 
 BRANCHES = ("CLIP", "Baseline", "Geometry", "Ours")
 
 
-class FGGM:
+class FGM:
     """One independent instance per test stream/dataset.
 
     text: [C, d] normalized class vectors, FP16 on CUDA for paper arithmetic.
@@ -20,8 +20,8 @@ class FGGM:
     the mean of selected per-view logits, not recomputed aggregate logits.
     """
 
-    def __init__(self, text: torch.Tensor, config: FGGMConfig | None = None):
-        self.config = config or FGGMConfig()
+    def __init__(self, text: torch.Tensor, config: FGMConfig | None = None):
+        self.config = config or FGMConfig()
         if text.ndim != 2 or min(text.shape) < 1:
             raise ValueError("text must have shape [classes, feature_dimension]")
         if text.dtype not in (torch.float16, torch.float32):

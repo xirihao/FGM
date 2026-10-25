@@ -161,7 +161,7 @@ def main():
         'torchvision_version': torchvision.__version__, 'pillow_version': pillow_version,
         'clip_sources': {p.name: sha256(p) for p in sorted(Path(clip.__file__).parent.glob('*.py'))},
         'extractor_sha256': sha256(Path(__file__)),
-        'augmentation_sha256': sha256(Path(__file__).resolve().parents[1] / 'fggm' / 'augmentation.py') if args.protocol == 'multiview' else None,
+        'augmentation_sha256': sha256(Path(__file__).resolve().parents[1] / 'fgm' / 'augmentation.py') if args.protocol == 'multiview' else None,
         'augmentation_ops_sha256': sha256(Path(__file__).resolve().parents[1] / 'third_party' / 'augmix_ops.py') if args.protocol == 'multiview' else None,
         'single_view_batch_size': args.batch_size if args.protocol == 'single' else None,
         'views': 64 if args.protocol == 'multiview' else 1,
@@ -192,7 +192,7 @@ def main():
     logits = selected = None
     output_names = ['features.npy', 'text_weights.npy']
     if args.protocol == 'multiview':
-        from fggm.augmentation import get_ood_preprocess
+        from fgm.augmentation import get_ood_preprocess
         preprocess = get_ood_preprocess()
         logits = np.lib.format.open_memmap(args.output / 'logits.npy', mode=mode, dtype=np.float16, shape=(n, classes))
         selected = np.lib.format.open_memmap(args.output / 'selected_indices.npy', mode=mode, dtype=np.int16, shape=(n, 6))

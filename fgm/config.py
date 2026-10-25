@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 @dataclass(frozen=True)
-class FGGMConfig:
+class FGMConfig:
     h: float = 20.0
     alpha: float = 0.01
     confidence_threshold: float = 0.1
@@ -48,7 +48,7 @@ class FGGMConfig:
         content = json.loads(Path(path).read_text(encoding="utf-8-sig"))
         known = {f.name for f in fields(cls)}
         if not isinstance(content, dict) or set(content) - known:
-            raise ValueError("Config must be an object containing only FGGMConfig fields")
+            raise ValueError("Config must be an object containing only FGMConfig fields")
         return cls(**content)
 
     def to_dict(self):

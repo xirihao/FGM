@@ -50,7 +50,7 @@ If the original source and feature cache are available externally:
 python scripts/compare_reference.py --reference-code /external/archived_code --cache /external/cache/example --samples 260 --output outputs/reference_check.json
 ```
 
-The external directory must contain `fggm.py` and `prototype_core.py` from the archived implementation. It compares all score branches, anchors and frequency histories for both release normalization modes. Omit `--samples` for a complete cached stream. It does not use labels or run the encoder.
+The external directory must contain `fgm.py` and `prototype_core.py`. For compatibility with archived implementations, `fggm.py` and its `FGGM` class name are also accepted. The comparison uses the current names when both are present. It compares all score branches, anchors and frequency histories for both release normalization modes. Omit `--samples` for a complete cached stream. It does not use labels or run the encoder.
 
 ## Efficiency
 

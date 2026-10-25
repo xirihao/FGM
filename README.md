@@ -1,10 +1,10 @@
-# FGGM
+# FGM
 
 **Frequency-Corrected Geometric Matching for Test-Time Adaptation of Vision-Language Models**
 
 [Overview](#overview) · [Main results](#main-results) · [Test order analysis](#test-order-analysis) · [Visualization](#visualization) · [Installation](#installation) · [Data preparation](docs/DATA_PREPARATION.md)
 
-FGGM adapts predictions from frozen vision-language models using a shared prototype memory. Historical feature statistics adjust the geometry of prototype matching, and historical soft prediction frequencies correct relative class scores. The method requires no backpropagation and stores no image examples in its adaptation state.
+FGM adapts predictions from frozen vision-language models using a shared prototype memory. Historical feature statistics adjust the geometry of prototype matching, and historical soft prediction frequencies correct relative class scores. The method requires no backpropagation and stores no image examples in its adaptation state.
 
 ## Overview
 
@@ -18,7 +18,7 @@ FGGM adapts predictions from frozen vision-language models using a shared protot
 
 ## Main results
 
-FGGM achieves mean accuracy of **70.34%** with CLIP ViT-B/16 and **63.46%** with CLIP ResNet-50 across the ten datasets. The tables retain the manuscript numbering. Method names link to their papers. **Bold** and <ins>underlined</ins> values mark the best and second-best results among adaptation methods without backpropagation.
+FGM achieves mean accuracy of **70.34%** with CLIP ViT-B/16 and **63.46%** with CLIP ResNet-50 across the ten datasets. The tables retain the manuscript numbering. Method names link to their papers. **Bold** and <ins>underlined</ins> values mark the best and second-best results among adaptation methods without backpropagation.
 
 ### Table 2. Ten-dataset accuracy (%) with CLIP ViT-B/16
 
@@ -77,7 +77,7 @@ FGGM achieves mean accuracy of **70.34%** with CLIP ViT-B/16 and **63.46%** with
 This repository contains source code, configurations, documentation, and the figures shown above. Model checkpoints, benchmark datasets, class metadata, feature caches, and runtime outputs are not included. External inputs and generated outputs are excluded by `.gitignore`.
 
 ```text
-fggm/                    Method, configuration and augmentation
+fgm/                    Method, configuration and augmentation
 configs/                 Default and experiment-specific settings
 scripts/prepare_manifest.py   Ordered image inputs and separate labels
 scripts/extract_features.py   Single-view / multiview CLIP encoding
@@ -101,8 +101,8 @@ The evaluated environment used Python 3.10.15, PyTorch 2.1.1, torchvision 0.16.1
 From this repository directory:
 
 ```bash
-conda create -n fggm python=3.10.15 -y
-conda activate fggm
+conda create -n fgm python=3.10.15 -y
+conda activate fgm
 python -m pip install torch==2.1.1 torchvision==0.16.1 --index-url https://download.pytorch.org/whl/cu118
 python -m pip install -r requirements.txt
 python -m pip install -r requirements-clip.txt

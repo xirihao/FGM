@@ -5,8 +5,8 @@ import platform
 from pathlib import Path
 import numpy as np
 import torch
-from fggm import FGGM, FGGMConfig, BRANCHES
-from fggm.io import sha256, write_json
+from fgm import FGM, FGMConfig, BRANCHES
+from fgm.io import sha256, write_json
 
 
 def main():
@@ -60,7 +60,7 @@ def main():
     torch.set_num_threads(4)
     torch.backends.cuda.matmul.allow_tf32 = False
     torch.backends.cudnn.allow_tf32 = False
-    config = FGGMConfig.from_json(args.config)
+    config = FGMConfig.from_json(args.config)
     overrides = {key: getattr(args, key) for key in ("h", "gamma", "normalization") if getattr(args, key) is not None}
     config = replace(config, **overrides)
     X = np.load(args.features, mmap_mode="r", allow_pickle=False)
@@ -83,7 +83,7 @@ def main():
     else:
         order = np.arange(len(X))
     dtype = getattr(torch, args.dtype)
-    model = FGGM(torch.from_numpy(T).to(device=device, dtype=dtype), config)
+    model = FGM(torch.from_numpy(T).to(device=device, dtype=dtype), config)
     predictions = np.empty((len(X), len(BRANCHES)), dtype=np.int32)
     with torch.inference_mode():
         for start in range(0, len(X), args.chunk_size):
