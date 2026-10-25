@@ -126,7 +126,7 @@ CUDA is the validated precision path. TF32 is disabled. The normal CUDA OpenAI C
 
 ## Point-cloud scope
 
-The cached-feature adaptation interface can consume external point-cloud/text embeddings with compatible dimensions. This code release does not include a validated pipeline from raw point clouds to the paper's point-cloud results. The existing third-party PTA point-cloud runner is not an implementation of FGGM. It is therefore not repackaged as if it reproduced those results.
+The adaptation interface accepts compatible point cloud and text embeddings. This release does not include a validated pipeline from raw point clouds to the reported results.
 
 ## Third-party augmentation
 

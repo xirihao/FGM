@@ -20,7 +20,7 @@ CUDA float16 is the reference input/prototype path. Feature moments and covarian
 
 `normalization="guarded"` retains the previous anchor only if a candidate or its norm is nonfinite, or its norm is zero. Valid candidates use the same normalization arithmetic as the reference. `normalization="legacy"` performs the original division without protection and may fail on a cancellation case. Both the baseline and proposed branches use the same selected rule.
 
-Warm-up preserves the reference mixed-precision expression. The geometric warm-up score is algebraically the baseline in exact arithmetic but need not be bitwise equal to it. This release does not silently replace it with the baseline tensor.
+Warm-up preserves the reference mixed-precision expression. The geometric warm-up score is algebraically the baseline in exact arithmetic but need not be bitwise equal to it.
 
 CPU float32 mode and different hardware/library versions may change predictions, especially near ties. `topk` is used for the prediction rule to preserve the reference tie handling on the validated environment.
 
@@ -28,7 +28,7 @@ For repeated stream orders, extract features once and permute cached rows. Do no
 
 ## Ablations
 
-The default replay emits the unadapted text score, shared prototype baseline, geometry before frequency correction and complete method. `frequency_only.json` applies frequency correction to the original baseline. Config fields also support controlled changes to geometry weight, frequency strength, prototype update rate and refresh timing. These runs are new experiments unless all conditions match an archived experiment. They are not automatically inserted into any paper table.
+The default replay emits the unadapted text score, shared prototype baseline, geometry before frequency correction and complete method. `frequency_only.json` applies frequency correction to the original baseline. Config fields also support controlled changes to geometry weight, frequency strength, prototype update rate and refresh timing. These runs are new experiments unless all conditions match an archived experiment.
 
 ## Controlled class composition
 
@@ -40,7 +40,7 @@ python scripts/score.py --predictions outputs/example/dirichlet_predictions.npz 
 
 The stream constructor allocates each class across chronological blocks using a Dirichlet draw and multinomial counts, then shuffles within blocks. `--mode separate` presents whole classes successively. Labels are used for constructing these evaluation conditions, then only row indices enter adaptation. This portable stream generator defines a new explicit realization. Exact historical realization requires its original saved permutation.
 
-Frequency history estimates the model's prediction distribution, not the true label prior. The class-concentrated configuration disables frequency correction. Do not interpret its results as evidence that the complete frequency correction is robust to every changing class composition.
+Frequency history estimates the model's prediction distribution, not the true label prior. The class-concentrated configuration disables frequency correction. This experiment therefore evaluates geometric adaptation under changes in class composition.
 
 ## Reference comparison
 
@@ -54,4 +54,4 @@ The external directory must contain `fggm.py` and `prototype_core.py` from the a
 
 ## Efficiency
 
-Cached replay excludes image loading and encoder computation. Its elapsed time is not end-to-end inference FPS and must not be substituted for the paper's efficiency table. This release does not hard-code measured FPS or memory values as executable results.
+Cached replay excludes image loading and encoder computation. Its elapsed time is not end-to-end inference FPS and must not be substituted for the paper's efficiency table.

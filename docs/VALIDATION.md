@@ -56,5 +56,3 @@ The dependency is pinned to official CLIP commit `c13005fd422b20dcd11774e9fff463
 - A complete raw-point-cloud pipeline.
 - End-to-end FPS inferred from cached replay time.
 - Exact accuracy reproduction from changed prompts, splits, class mappings, input orders or library versions.
-
-The paper directory, its original code, saved benchmark outputs and PDF were not modified by this code-only packaging task.

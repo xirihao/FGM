@@ -14,7 +14,7 @@ FGGM adapts predictions from frozen vision-language models using a shared protot
 
 ![Figure 2. Feature anisotropy and prediction frequency across ten datasets](assets/figure2_observations.png)
 
-**Figure 2.** Feature variance spectra and total variation distances between predicted and observed class proportions across ten datasets. Shading marks the first ten principal components. These are retrospective diagnostics. Adaptation uses only preceding observations and does not access test labels.
+**Figure 2.** Feature variance spectra and total variation distances between predicted and observed class proportions across ten datasets. Shading marks the first ten principal components. These are retrospective diagnostics. The covariance and prediction-frequency estimates used for each prediction are computed from preceding observations. Adaptation does not access test labels.
 
 ## Main results
 
@@ -92,7 +92,7 @@ docs/                    Input formats and reproduction details
 assets/                  Figures displayed in this README
 ```
 
-The complete image pipeline supports ViT-B/16 and ResNet-50. The feature interface can accept compatible external point-cloud embeddings, but this release does **not** claim a validated raw-point-cloud reproduction pipeline.
+The image pipeline supports ViT-B/16 and ResNet-50. Point cloud experiments require externally prepared compatible embeddings.
 
 ## Installation
 
