@@ -1,0 +1,15 @@
+{
+  "h": 20.0,
+  "alpha": 0.01,
+  "confidence_threshold": 0.1,
+  "logit_scale": 100.0,
+  "geometry_weight": 0.5,
+  "gamma": 2.0,
+  "temperature": 2.25,
+  "frequency_rate": null,
+  "min_history": 128,
+  "update_interval": 128,
+  "covariance_floor": 1e-8,
+  "denominator_floor": 1e-10,
+  "normalization": "guarded"
+}

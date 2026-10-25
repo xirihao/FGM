@@ -1,0 +1,2 @@
+# External tokenizer and architecture code. Checkpoints are downloaded separately.
+git+https://github.com/openai/CLIP.git@c13005fd422b20dcd11774e9fff46370887218e4
